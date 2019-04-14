@@ -1,0 +1,66 @@
+﻿
+@model Solution
+
+<h2>Submition Form</h2>
+<div class="custom-form-container col-sm-12">
+    <form class="custom-form col-sm-10 col-sm-offset-1" method="post">
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group row">
+            <label for="inputNickname" class="col-sm-2 col-form-label">Nickname</label>
+            <div class="col-sm-8" >
+                <input name="nickName" type="text" id="inputNickname" class="form-control" value=@Model.nickName>
+                @Html.ValidationMessageFor(model => model.nickName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="selectTask" class="col-sm-2 col-form-label">Task</label>
+            <div class="col-sm-8">
+                <select required name="taskId" class="browser-default custom-select form-control">
+                    <option disabled selected="@(Model.selectedTask == null ? true : false)">Select</option>
+                    @foreach (var task in Model.algorithmTasks)
+                    {
+                        <option selected="@(Model.selectedTask != null && Model.selectedTask.Id == task.Id ? true : false)" name="taskId" value=@task.Id>@task.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="inputCode" class="col-sm-2 col-form-label">Solution</label>
+            <div class="col-sm-8">
+                <textarea name="code" class="form-control rounded-0" id="inputCode" rows="5" placeholder="Type code in C#">@Model.code</textarea>
+                <!--@Html.TextArea("code", new { @class="form-control rounded-0", @id="inputCode", @rows="3", @placeholder= "Type code in C#" })-->
+            </div>
+        </div>
+
+        <button class="btn btn-info btn-block" type="submit" asp-controller="Solution" asp-action="ValidateSolutionAsync">
+            Submit
+        </button>
+        @if (Model.status != Solution.Status.Initial && Model.selectedTask != null)
+        {
+            @if (Model.status == Solution.Status.Success)
+            {
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">@Model.status</h3>
+                    </div>
+                    <div class="panel-body">Input: @Model.selectedTask.Input Output: @Model.selectedTask.Output</div>
+                </div>
+
+            }
+            else if (Model.status == Solution.Status.Error)
+            {
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">@Model.status</h3>
+                    </div>
+                    <div class="panel-body">Input: @Model.selectedTask.Input Output: @Model.output</div>
+                </div>
+            }
+        }
+
+    </form>
+</div>

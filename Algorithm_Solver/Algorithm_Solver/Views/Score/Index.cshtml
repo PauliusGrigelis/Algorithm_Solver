@@ -1,0 +1,32 @@
+﻿
+@model List<Score>
+
+<h2>Score Board</h2>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nickname</th>
+            <th scope="col">Wins</th>
+            <th scope="col">Losses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count > 0)
+        {
+            int place = 0;
+            foreach (Score player in Model)
+            {
+                place++;
+                <tr>
+                    <th scope="row">@place</th>
+                    <td>@player.NickName</td>
+                    <td>@player.Wins</td>
+                    <td>@player.Losses</td>
+                </tr>
+            }
+        }
+        else { <td colspan="4">No records found</td> }
+    </tbody>
+</table>
+
